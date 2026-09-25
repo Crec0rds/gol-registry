@@ -1,9 +1,9 @@
 <!-- ====================================================================
  NASSCORP COGNITIVE TOOL DECK: GLOBAL ENTERPRISE ONLINE HUB MATRIX
  Designed by Morris B.S. Dossen — System Designer
- BUILD VER: V16.0.0 (3M+ COMPACT CHUNK 30-PART RAW TEXT PIPELINES)
+ BUILD VER: V17.0.0 (3M+ COMPACT CHUNK 30-PART RAW TEXT PIPELINES)
  PATH LOCATION: C:\GOL_ONLINE_REGISTRY\index.html
- SEGMENT 1 OF 6: LAYOUT HEADERS, AUTOFILL REFUSAL, & PRINT MEDIA STYLES
+ SEGMENT 1 OF 6: CORE LAYOUT HEADERS, AUTOFILL REFUSAL, & PRINT MEDIA STYLES
  ==================================================================== -->
 <!DOCTYPE html>
 <html lang="en">
@@ -49,7 +49,7 @@
         .form-group input, .form-group select, .form-group textarea { padding: 10px; border: 2px solid #c8d6e5; border-radius: 6px; font-size: 13px; font-weight: 700; font-family: inherit; color: #333; text-transform: uppercase; box-sizing: border-box; }
         .dual-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
 
-        /* 🖨️ HARDWARE PRINT MEDIA INTERCEPTOR STYLES (Enforces clean black/white physical reports) */
+        /* 🖨️ HARDWARE PRINT MEDIA INTERCEPTOR STYLES */
         @media print {
             body { background: white; color: black; font-size: 12px; }
             .top-banner, #secureIngressGatewayShield, .metrics-ribbon, .search-control-deck, #adminSidebarFormBoxContainer, #userCreationTerminalBox, .btn-gold, .btn-red, th:last-child, td:last-child { display: none !important; }
@@ -281,8 +281,8 @@ button { display: block; text-align: center; text-decoration: none; border: none
                                 <tr>
                                     <th>EMPLOYEE NAME</th>
                                     <th style="width: 280px;">DEPLOYED AGENCY</th>
-                                    <th style="width: 180px;">AUDIT MONTH</th>
-                                    <th style="width: 140px;">AUDIT YEAR</th>
+                                    <th style="width: 180px;">AUDIT YEAR</th>
+                                    <th style="width: 140px;">AUDIT MONTH</th>
                                     <th style="text-align:center; width:180px; display: none;" id="datagridActionsHeaderHubCell">ACTIONS HUB</th>
                                 </tr>
                             </thead>
@@ -513,10 +513,11 @@ function executePreFilterIndexing() {
                     tr.style.cursor = "default";
                 }
                 
+                // 🎯 HEADERS ORDER SYNCED EXACTLY: NAME -> AGENCY -> YEAR -> MONTH
                 tr.innerHTML = "<td>" + (row.employee_name || 'N/A') + "</td>" +
                                "<td>" + (row.agency || 'N/A') + "</td>" +
-                               "<td>" + (row.month || 'JANUARY') + "</td>" +
                                "<td>" + (row.year || '2026') + "</td>" +
+                               "<td>" + (row.month || 'JANUARY') + "</td>" +
                                (currentSystemAccessRole === "ADMIN" ? "<td style='text-align:center;'><button class='btn-gold' style='display:inline-block; width:auto; margin-right:8px; padding:6px 12px; font-size:11px; height:24px; line-height:10px;' onclick='loadRowIntoForm(\"" + row.id + "\")'>EDIT</button><button class='btn-red' style='display:inline-block; width:auto; padding:6px 12px; font-size:11px; height:24px; line-height:10px;' onclick='deleteRecord(event, \"" + row.id + "\")'>DELETE</button></td>" : "");
                 fragment.appendChild(tr);
             }
@@ -568,8 +569,8 @@ function executePreFilterIndexing() {
             document.getElementById('recordId').value = item.id;
             document.getElementById('employeeName').value = item.employee_name;
             document.getElementById('employeeAgency').value = item.agency;
-            document.getElementById('auditMonth').value = item.month;
             document.getElementById('auditYear').value = item.year;
+            document.getElementById('auditMonth').value = item.month;
             document.getElementById('formPanelTitle').innerText = "EDIT REGISTRY RECORD";
         }
 
@@ -582,8 +583,8 @@ function executePreFilterIndexing() {
                 id: id ? id : crypto.randomUUID().substring(0, 8),
                 employee_name: document.getElementById('employeeName').value.trim().toUpperCase(),
                 agency: document.getElementById('employeeAgency').value.trim().toUpperCase(),
-                month: document.getElementById('auditMonth').value.toUpperCase(),
-                year: document.getElementById('auditYear').value.trim().toUpperCase()
+                year: document.getElementById('auditYear').value.trim().toUpperCase(),
+                month: document.getElementById('auditMonth').value.toUpperCase()
             };
             let updatedVault = [...memoryVaultCache];
             if (id) { updatedVault = updatedVault.map(item => item.id === payload.id ? payload : item); } else { updatedVault.push(payload); }
@@ -611,8 +612,9 @@ function executePreFilterIndexing() {
                 if (cells.length >= 4) {
                     const [pos_0, pos_1, pos_2, pos_3] = cells;
                     if (pos_0.toUpperCase().includes("NAME") || pos_0.toUpperCase().includes("EMPLOYEE")) return;
-                    let empYear = pos_2 ? pos_2.toUpperCase() : "2026"; let empMonth = pos_3 ? pos_3.toUpperCase() : "JANUARY";
-                    vault.push({ id: crypto.randomUUID().substring(0, 8), employee_name: pos_0.toUpperCase(), agency: pos_1.toUpperCase(), month: empMonth, year: empYear });
+                    let empYear = pos_2 ? pos_2.toUpperCase() : "2026";
+                    let empMonth = pos_3 ? pos_3.toUpperCase() : "JANUARY";
+                    vault.push({ id: crypto.randomUUID().substring(0, 8), employee_name: pos_0.toUpperCase(), agency: pos_1.toUpperCase(), year: empYear, month: empMonth });
                 }
             });
             saveVault(vault); alert("STAGING INTERFACE TRACKS SECURED.");
@@ -624,8 +626,8 @@ function executePreFilterIndexing() {
         
         function exportToCSV() {
             if (memoryVaultCache.length === 0) return;
-            let csvContent = "data:text/csv;charset=utf-8,NAME,AGENCY,MONTH,YEAR\r\n";
-            memoryVaultCache.forEach(row => { csvContent += '"' + row.employee_name + '","' + row.agency + '","' + row.month + '","' + row.year + '"\r\n'; });
+            let csvContent = "data:text/csv;charset=utf-8,NAME,AGENCY,YEAR,MONTH\r\n";
+            memoryVaultCache.forEach(row => { csvContent += '"' + row.employee_name + '","' + row.agency + '","' + row.year + '","' + row.month + '"\r\n'; });
             const link = document.createElement("a"); link.setAttribute("href", encodeURI(csvContent)); link.setAttribute("download", "GOL_ONLINE_EXPORT_REPORT.csv"); document.body.appendChild(link); link.click(); document.body.removeChild(link);
         }
 
