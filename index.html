@@ -1,7 +1,7 @@
 <!-- ====================================================================
  NASSCORP COGNITIVE TOOL DECK: GLOBAL ENTERPRISE ONLINE HUB MATRIX
  Designed by Morris B.S. Dossen — System Designer
- BUILD VER: V17.0.0 (3M+ COMPACT CHUNK 30-PART RAW TEXT PIPELINES)
+ BUILD VER: V18.0.0 (3M+ COMPACT CHUNK 30-PART RAW TEXT PIPELINES)
  PATH LOCATION: C:\GOL_ONLINE_REGISTRY\index.html
  SEGMENT 1 OF 6: CORE LAYOUT HEADERS, AUTOFILL REFUSAL, & PRINT MEDIA STYLES
  ==================================================================== -->
@@ -97,7 +97,7 @@ button { display: block; text-align: center; text-decoration: none; border: none
                     <label>PORTAL ACCESS LOCK PASSWORD</label>
                     <input type="password" id="gatePassField" required placeholder="ENTER ACCESS PASSWORD..." style="width: 100%;" autocomplete="off">
                 </div>
-                <button type="submit" class="btn-blue" style="height: 40px; line-height: 16px;">AUTHORIZE INGRESS SESSIONS</button>
+                <button type="submit" class="btn-blue" style="height: 40px; line-height: 16px;">LOGIN</button>
             </form>
         </div>
     </div>
@@ -130,7 +130,7 @@ button { display: block; text-align: center; text-decoration: none; border: none
             </div>
             <div class="counter-card" style="border-left-color: #008002;">
                 <span class="counter-label">CLOUD INFRASTRUCTURE MATRIX LINK</span>
-                <span class="counter-value" style="font-size:14px; color:#008002; font-weight:800; margin-top:2px;">GLOBAL PORT V16.0 SECURE</span>
+                <span class="counter-value" style="font-size:14px; color:#008002; font-weight:800; margin-top:2px;">GLOBAL PORT V18.0 SECURE</span>
             </div>
         </div>
 <!-- 🛰️ SYSTEM SIDEBAR BAY CONTROL LAYER (RESTRICTED TO COORDINATORS OF THE DEPARTMENT) -->
@@ -150,7 +150,7 @@ button { display: block; text-align: center; text-decoration: none; border: none
 
                         <div class="form-group">
                             <label>MONTHLY BASE BUDGETARY SALARY (SALARY)</label>
-                            <input type="number" step="0.01" id="employeeSalary" required placeholder="E.G. 1250.50...">
+                            <input type="number" step="0.01" id="employeeSalary" required placeholder="ENTER USD SALARY VALUE...">
                         </div>
 
                         <div class="form-group">
@@ -280,9 +280,10 @@ button { display: block; text-align: center; text-decoration: none; border: none
                             <thead>
                                 <tr>
                                     <th>EMPLOYEE NAME</th>
-                                    <th style="width: 280px;">DEPLOYED AGENCY</th>
-                                    <th style="width: 180px;">AUDIT YEAR</th>
-                                    <th style="width: 140px;">AUDIT MONTH</th>
+                                    <th style="width: 160px;">BASE SALARY</th>
+                                    <th style="width: 240px;">DEPLOYED AGENCY</th>
+                                    <th style="width: 140px;">AUDIT YEAR</th>
+                                    <th style="width: 160px;">AUDIT MONTH</th>
                                     <th style="text-align:center; width:180px; display: none;" id="datagridActionsHeaderHubCell">ACTIONS HUB</th>
                                 </tr>
                             </thead>
@@ -381,20 +382,24 @@ button { display: block; text-align: center; text-decoration: none; border: none
             }
         }
 
-        // 🛰️ DYNAMIC ADMINISTRATIVE PROFILE CREATOR FUNCTION (RUNS LOCALLY IN SECURE SESSION MEMORY)
+        // 🛰️ DYNAMIC ADMINISTRATIVE PROFILE CREATOR FUNCTION (UN-SILENCED WITH DIRECT BROWSER ALERT FLASH)
         function handleCreatePersonnelUser(e) {
             e.preventDefault();
             const ssnInput = document.getElementById('newUserSSN').value.trim().toUpperCase();
             const passInput = document.getElementById('newUserPassword').value;
             const roleInput = document.getElementById('newUserRole').value;
 
-            if (authorizedPersonnelAccounts[sssnInput]) {
+            if (authorizedPersonnelAccounts[ssnInput]) {
                 alert("⛔ REJECTION: THIS PROFILE SSN ALREADY EXISTS ON CORES.");
                 return;
             }
 
+            // Inject account string token directly into real-time operational dictionary
             authorizedPersonnelAccounts[sssnInput] = { passcode: passInput, role: roleInput };
-            alert(`🔒 SYSTEM CONFIRMATION:\nNEW PROFILE [${sssnInput}] SECURELY INITIALIZED WITH ${roleInput} CLEARANCE PERMISSIONS!`);
+            
+            // 📣 UN-SILENCED AUDIO-VISUAL NOTIFICATION FLASH
+            alert("🔒 SYSTEM SECURITY CONFIRMATION:\nNEW PERSONNEL PROFILE [" + ssnInput + "] SECURELY INTRODUCED TO REGISTRY MEMORY MATRIX CORES WITH " + roleInput + " PRIVILEGES!");
+            
             document.getElementById('userCreationForm').reset();
         }
 
@@ -497,7 +502,7 @@ function executePreFilterIndexing() {
             if (currentChunkLoadedIndex >= filteredCacheIndex.length && currentChunkLoadedIndex > 0) return;
 
             if (filteredCacheIndex.length === 0) {
-                const colSpanCount = currentSystemAccessRole === "ADMIN" ? 5 : 4;
+                const colSpanCount = currentSystemAccessRole === "ADMIN" ? 6 : 5;
                 tbody.innerHTML = '<tr><td colspan="' + colSpanCount + '" style="text-align: center; padding: 30px; color:#ff3b30; font-weight:800; font-size:12px;">NO RECORD ENTRIES MATCH THE SPECIFIED DROPDOWN CRITERIA.</td></tr>';
                 return;
             }
@@ -513,8 +518,12 @@ function executePreFilterIndexing() {
                     tr.style.cursor = "default";
                 }
                 
-                // 🎯 HEADERS ORDER SYNCED EXACTLY: NAME -> AGENCY -> YEAR -> MONTH
+                // 🎯 FORMAT USD FIXED CURRENCY VALUE FOR COLUMN B
+                const salaryFormatted = row.salary ? "$" + parseFloat(row.salary).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " USD" : "$0.00 USD";
+                
+                // 🎯 HEADERS ORDER SYNCED EXACTLY: NAME -> SALARY -> AGENCY -> YEAR -> MONTH
                 tr.innerHTML = "<td>" + (row.employee_name || 'N/A') + "</td>" +
+                               "<td style='font-weight: 700; color: #008002;'>" + salaryFormatted + "</td>" +
                                "<td>" + (row.agency || 'N/A') + "</td>" +
                                "<td>" + (row.year || '2026') + "</td>" +
                                "<td>" + (row.month || 'JANUARY') + "</td>" +
@@ -531,7 +540,7 @@ function executePreFilterIndexing() {
                 appendNextChunkToGridBody();
             }
         }
-// 🛰️ DYNAMIC CITIZEN CENSUS VALVE: Deduplicates 3,000,000+ histories inside memory channels
+ // 🛰️ DYNAMIC CITIZEN CENSUS VALVE: Deduplicates 3,000,000+ histories inside memory channels
         function calculateMetrics() {
             document.getElementById('totalEntitiesBox').innerText = memoryVaultCache.length.toLocaleString();
             
@@ -568,6 +577,7 @@ function executePreFilterIndexing() {
             if (!item) return;
             document.getElementById('recordId').value = item.id;
             document.getElementById('employeeName').value = item.employee_name;
+            document.getElementById('employeeSalary').value = item.salary || 0.0;
             document.getElementById('employeeAgency').value = item.agency;
             document.getElementById('auditYear').value = item.year;
             document.getElementById('auditMonth').value = item.month;
@@ -582,6 +592,7 @@ function executePreFilterIndexing() {
             const payload = {
                 id: id ? id : crypto.randomUUID().substring(0, 8),
                 employee_name: document.getElementById('employeeName').value.trim().toUpperCase(),
+                salary: parseFloat(document.getElementById('employeeSalary').value) || 0.0,
                 agency: document.getElementById('employeeAgency').value.trim().toUpperCase(),
                 year: document.getElementById('auditYear').value.trim().toUpperCase(),
                 month: document.getElementById('auditMonth').value.toUpperCase()
@@ -609,12 +620,13 @@ function executePreFilterIndexing() {
                 let cleanLine = rowText.trim(); if (!cleanLine) return;
                 let delimiter = cleanLine.includes(";") ? ";" : (cleanLine.includes("\t") ? "\t" : ",");
                 let cells = cleanLine.split(delimiter).map(c => c.trim().replace(/^"|"$/g, ""));
-                if (cells.length >= 4) {
-                    const [pos_0, pos_1, pos_2, pos_3] = cells;
+                if (cells.length >= 5) {
+                    const [pos_0, pos_1, pos_2, pos_3, pos_4] = cells;
                     if (pos_0.toUpperCase().includes("NAME") || pos_0.toUpperCase().includes("EMPLOYEE")) return;
-                    let empYear = pos_2 ? pos_2.toUpperCase() : "2026";
-                    let empMonth = pos_3 ? pos_3.toUpperCase() : "JANUARY";
-                    vault.push({ id: crypto.randomUUID().substring(0, 8), employee_name: pos_0.toUpperCase(), agency: pos_1.toUpperCase(), year: empYear, month: empMonth });
+                    let empSalary = parseFloat(pos_1.replace(/[^0-9.]/g, '')) || 0.0;
+                    let empYear = pos_3 ? pos_3.toUpperCase() : "2026";
+                    let empMonth = pos_4 ? pos_4.toUpperCase() : "JANUARY";
+                    vault.push({ id: crypto.randomUUID().substring(0, 8), employee_name: pos_0.toUpperCase(), salary: empSalary, agency: pos_1.toUpperCase(), year: empYear, month: empMonth });
                 }
             });
             saveVault(vault); alert("STAGING INTERFACE TRACKS SECURED.");
@@ -626,8 +638,8 @@ function executePreFilterIndexing() {
         
         function exportToCSV() {
             if (memoryVaultCache.length === 0) return;
-            let csvContent = "data:text/csv;charset=utf-8,NAME,AGENCY,YEAR,MONTH\r\n";
-            memoryVaultCache.forEach(row => { csvContent += '"' + row.employee_name + '","' + row.agency + '","' + row.year + '","' + row.month + '"\r\n'; });
+            let csvContent = "data:text/csv;charset=utf-8,NAME,SALARY,AGENCY,YEAR,MONTH\r\n";
+            memoryVaultCache.forEach(row => { csvContent += '"' + row.employee_name + '","' + row.salary + '","' + row.agency + '","' + row.year + '","' + row.month + '"\r\n'; });
             const link = document.createElement("a"); link.setAttribute("href", encodeURI(csvContent)); link.setAttribute("download", "GOL_ONLINE_EXPORT_REPORT.csv"); document.body.appendChild(link); link.click(); document.body.removeChild(link);
         }
 
